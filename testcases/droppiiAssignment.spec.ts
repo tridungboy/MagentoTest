@@ -6,17 +6,20 @@ let Password = '1234@Company'
 let FirstName = 'Dung'
 let LastName = 'Le'
 
-test('Check Home Page displayed', async ({ homePage }) => {
+
+test.beforeEach(async ({ homePage }) => {
 
     await homePage.GoToHomePage()
+})
+
+test('Check Home Page displayed', async ({ homePage }) => {
+
     await homePage.HomePageDisplayed()
 
 });
 
-test('Check user can sign in normally', async ({ homePage, signInPage, customerAccountPage }) => {
+test('Check user can sign in normally', async ({ homePage, signInPage }) => {
 
-    await homePage.GoToHomePage()
-    await homePage.HomePageDisplayed()
     await homePage.ClickSignInLink()
     await signInPage.SignInPageDisplayed()
     await signInPage.Login(Email, Password)
@@ -24,12 +27,11 @@ test('Check user can sign in normally', async ({ homePage, signInPage, customerA
 
 });
 
-test('Check user can sign up normally', async ({ homePage, signUpPage }) => {
+test('Check user can sign up normally', async ({ homePage, signUpPage, customerAccountPage }) => {
 
-    await homePage.GoToHomePage()
-    await homePage.HomePageDisplayed()
     await homePage.ClickSignUpLink()
     await signUpPage.SignUpPageDisplayed()
-    await signUpPage.CreateAnAccount(FirstName, LastName, Email, Password)
+    let [fullName, email] = await signUpPage.CreateAnAccount(FirstName, LastName, Email, Password)
+    await customerAccountPage.RegisterSuccessfully(fullName, email)
 
 });

@@ -18,12 +18,12 @@ export class SignUpPage {
 
         this.TTL_SignUp = this.page.locator('xpath=//h1')
 
-        this.TXT_FirstName = this.page.getByText('First Name').locator('xpath=/parent::*/following-sibling::*//input')
-        this.TXT_LastName = this.page.getByText('Last Name').locator('xpath=/parent::*/following-sibling::*//input')
-        this.TXT_Email = this.page.getByText('Email').locator('xpath=/parent::*/following-sibling::*//input')
-        this.TXT_Password = this.page.getByText('Password', { exact: true }).locator('xpath=/parent::*/following-sibling::*//input')
-        this.TXT_ConfirmPassword = this.page.getByText('Confirm Password').locator('xpath=/parent::*/following-sibling::*//input')
-        this.BTN_CreateAnAccount = this.page.getByRole('button',{name: 'Create an Account', exact: false})
+        this.TXT_FirstName = this.page.getByLabel('First Name')
+        this.TXT_LastName = this.page.getByLabel('Last Name')
+        this.TXT_Email = this.page.getByLabel('Email', { exact: true })
+        this.TXT_Password = this.page.getByRole('textbox', { name: 'Password*', exact: true })
+        this.TXT_ConfirmPassword = this.page.getByLabel('Confirm Password')
+        this.BTN_CreateAnAccount = this.page.getByRole('button', { name: 'Create an Account' })
     }
 
     private async SignUpPageHaveCorrectURL() {
@@ -39,49 +39,53 @@ export class SignUpPage {
         await this.SignUpTitleDisplayed()
     }
 
-    private async FillFirstName(lname){
-        if(await this.TXT_FirstName.isVisible()){
+    private async FillFirstName(lname) {
+        if (await this.TXT_FirstName.isVisible()) {
             await this.TXT_FirstName.fill(lname)
         }
     }
 
-    private async FillLastName(fname){
-        if(await this.TXT_LastName.isVisible()){
+    private async FillLastName(fname) {
+        if (await this.TXT_LastName.isVisible()) {
             await this.TXT_LastName.fill(fname)
         }
     }
 
-    private async FillEmail(email){
-        if(await this.TXT_Email.isVisible()){
+    private async FillEmail(email) {
+        if (await this.TXT_Email.isVisible()) {
             await this.TXT_Email.fill(email)
         }
     }
 
-    private async FillPassword(password){
-        if(await this.TXT_Password.isVisible()){
+    private async FillPassword(password) {
+        if (await this.TXT_Password.isVisible()) {
             await this.TXT_Password.fill(password)
         }
     }
 
-    private async FillPasswordAgain(password){
-        if(await this.TXT_ConfirmPassword.isVisible()){
+    private async FillPasswordAgain(password) {
+        if (await this.TXT_ConfirmPassword.isVisible()) {
             await this.TXT_ConfirmPassword.fill(password)
         }
     }
 
-    private async ClickCreateAccountButton(){
-        if(await this.BTN_CreateAnAccount.isVisible() && await this.BTN_CreateAnAccount.isEnabled()){
+    private async ClickCreateAccountButton() {
+        if (await this.BTN_CreateAnAccount.isVisible() && await this.BTN_CreateAnAccount.isEnabled()) {
             await this.BTN_CreateAnAccount.click()
         }
     }
 
-    async CreateAnAccount(fname, lname, email, password){
+    async CreateAnAccount(fname, lname, email, password) {
         await this.FillFirstName(fname)
         await this.FillLastName(lname)
-        await this.FillEmail(email)
+        let fullName = fname + ' ' + lname
+        let mail = Math.random() + email
+        await this.FillEmail(mail)
         await this.FillPassword(password)
         await this.FillPasswordAgain(password)
         await this.ClickCreateAccountButton()
+
+        return [fullName, mail]
     }
 
 }

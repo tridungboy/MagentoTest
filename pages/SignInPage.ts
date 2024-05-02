@@ -15,8 +15,8 @@ export  class   SignInPage{
 
         this.TTL_SignIn = this.page.locator('xpath=//h1')
 
-        this.TXT_Email = this.page.getByText('Email').locator('xpath=/parent::*/following-sibling::*//input')
-        this.TXT_Password = this.page.getByText('Password').locator('xpath=/parent::*/following-sibling::*//input')
+        this.TXT_Email = this.page.getByLabel('Email', { exact: true })
+        this.TXT_Password = this.page.getByLabel('Password')
         this.BTN_SignIn = this.page.getByRole('button',{name: 'Sign In', exact: false})
     }
 

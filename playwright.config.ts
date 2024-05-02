@@ -31,6 +31,8 @@ export default defineConfig({
     video: 'on',
   },
 
+  timeout: 60 * 1000,
+
   /* Configure projects for major browsers */
   projects: [
     {
