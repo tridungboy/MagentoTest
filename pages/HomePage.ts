@@ -7,6 +7,7 @@ export class HomePage {
     LNK_SignIn: Locator
     LNK_SignUp: Locator
 
+    MSG_Migration: Locator
     LST_AccountOptions: Locator
 
     constructor(page) {
@@ -15,6 +16,7 @@ export class HomePage {
         this.LNK_SignIn = this.page.getByRole('link', { name: 'Sign In', exact: false })
         this.LNK_SignUp = this.page.getByRole('link', { name: 'Create an Account', exact: false })
 
+        this.MSG_Migration = this.page.getByRole('banner').getByText('Website under migration. Testing should function normally, but expect SQL data delays post-migration')
         this.LST_AccountOptions = this.page.locator('xpath=//*[@class="greet welcome"]')
     }
 
@@ -49,13 +51,14 @@ export class HomePage {
     }
 
     private async AccountOptionContainNames(fname, lname) {
-        await expect.soft(this.LST_AccountOptions.first()).toContainText(fname + ' ' + lname)
+        await expect.soft(this.LST_AccountOptions.first()).toContainText(fname + ' ' + lname,{timeout: 30000})
     }
 
     //Home Page assert after login section
     async HomePageDisplayedAfterLogin(fname, lname) {
         await this.HomePageHaveCorrectURL()
         await this.HomePageHaveCorrectTitle()
+        await this.MSG_Migration.waitFor({state: 'hidden'})
         await this.AccountOptionContainNames(fname, lname)
     }
 }
